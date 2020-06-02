@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script
+    src="https://hangouts.google.com/_/elUi/chat-redirect?dest=https%3A%2F%2Fcdnjs.cloudflare.com%2Fajax%2Flibs%2Faxios%2F0.19.2%2Faxios.min.js"></script>
+    <link rel="stylesheet" href="./screensaver.css">
+  <title>Screensaver</title>
+
+</head>
+
+<body>
+  <div class="overlay">
+    <p class="weather_widget">
+      <u>Weather Forecast</u><br></br>
+      <span id="today">Today(<sup>o</sup>C):</span><br></br>
+    </p>
+    <p class="time_widget">
+
+
+      <span id="time" class="time_label">
+        <script>
+
+          today = new Date();
+          hour = today.getHours();
+          minute = today.getMinutes();
+          second = today.getSeconds();
+
+          today = hour + ":" + minute + ":" + second;
+          document.write(today);
+
+
+        </script></span>
+      <br><br>
+      <span class="location_label"><i>Abuja, Nigeria</i></span>
+      <br><br>
+      <span class="location_label" style="font-size: 12px;">Abuja is the Federal Capital Territory of Nigeria. This is
+        the Central Bank of Nigeria (CBN) located in the Central Business District of Abuja.</span>
+    </p>
+
+  </div>
+  <script>
+    setInterval(function () {
+      today = new Date();
+      hour = today.getHours();
+      minute = today.getMinutes();
+      second = today.getSeconds();
+
+      today = hour + ":" + minute + ":" + second;
+
+      document.getElementById("time").innerHTML = today;
+    }, 1000)
+
+
+    async function getWeather() {
+
+      let degree = await fetch("http://api.weatherapi.com/v1/current.json?key=d495a8a8a2b74ed498b212818200205&q=Abuja");
+      console.log(degree);
+      let result = await degree.json();
+      console.log('result: ', result.current.temp_c);
+      document.getElementById('today').innerHTML = 'Today: ' + result.current.temp_c;
+
+
+    }
+
+    async function getTomorrowWeather() {
+
+      let tomorrowDegree = await fetch("http://api.weatherapi.com/v1/forecast.json?key=d495a8a8a2b74ed498b212818200205&q=Abuja&days=1");
+      console.log(tomorrowDegree);
+      let tomorrowResult = await tomorrowDegree.json();
+      console.log('tomorrowResult: ', tomorrowResult.forecast.temp_c);
+      document.getElementById('tomorrow').innerHTML = 'Tomorrow: ' + tomorrowResult.forecast.temp_c;
+    }
+
+    getWeather();
+    getTomorrowWeather();
+    
+  </script>
+</body>
+
+</html>
